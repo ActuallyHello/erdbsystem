@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"></head>
+</head>
+<body>
+
+<nav class="navbar is-primary is-mobile" role="navigation" aria-label="main navigation">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Модели
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все модели
+                    </a>
+                    <a class="navbar-item "> <!-- is-selected -->
+                        Создать модель
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item">
+                Задачи
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Пользователи
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все пользователи
+                    </a>
+                    <a class="navbar-item " href="/create-person"> <!-- is-selected -->
+                        Создать пользователя
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" id="open-modal">
+                        Войти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<h1 class="title">Создание пользователя</h1>
+
+<form id="user-form">
+    <div class="field">
+        <label class="label">Логин</label>
+        <div class="control">
+            <input class="input" type="text" placeholder="Введите логин" id="login" required>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Пароль</label>
+        <div class="control">
+            <input class="input" type="password" placeholder="Введите пароль" id="password" required>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">ФИО</label>
+        <div class="control">
+            <input class="input" type="text" placeholder="Введите ФИО" id="fio" required>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Тип</label>
+        <div class="control">
+            <div class="select">
+                <select id="user-type" required>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="admin">Администратор</option>
+                    <option value="user">Пользователь</option>
+                    <option value="guest">Гость</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Тип</label>
+        <div class="control">
+            <div class="select">
+                <select id="user-group" required>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="admin">Администратор</option>
+                    <option value="user">Пользователь</option>
+                    <option value="guest">Гость</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="control">
+        <button type="submit" class="button is-link">Создать пользователя</button>
+    </div>
+
+    <div id="response-message" class="notification is-hidden"></div>
+</form>
+</div>
+
+<script>
+    document.getElementById('user-form').onsubmit = async function(event) {
+        event.preventDefault(); // Предотвращаем перезагрузку страницы
+
+        const login = document.getElementById('login').value;
+        const password = document.getElementById('password').value;
+        const fio = document.getElementById('fio').value;
+        const userType = document.getElementById('user-type').value;
+
+        const responseMessage = document.getElementById('response-message');
+
+        // Отправка POST-запроса
+        try {
+            const response = await fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ login, password, fio, userType }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                responseMessage.classList.remove('is-hidden', 'is-danger');
+                responseMessage.classList.add('is-success');
+                responseMessage.textContent = 'Пользователь успешно создан!';
+            } else {
+                const error = await response.json();
+                responseMessage.classList.remove('is-hidden', 'is-success');
+                responseMessage.classList.add('is-danger');
+                responseMessage.textContent = Ошибка: ${error.message};
+            }
+        } catch (error) {
+            responseMessage.classList.remove('is-hidden', 'is-success');
+            responseMessage.classList.add('is-danger');
+            responseMessage.textContent = 'Произошла ошибка при отправке запроса.';
+        }
+    };
+</script>
+
+</body>
+</html>

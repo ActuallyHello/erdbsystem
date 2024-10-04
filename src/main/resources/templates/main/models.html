@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"></head>
+</head>
+<body>
+
+<nav class="navbar is-primary is-mobile" role="navigation" aria-label="main navigation">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Модели
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все модели
+                    </a>
+                    <a class="navbar-item "> <!-- is-selected -->
+                        Создать модель
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item">
+                Задачи
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Пользователи
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все пользователи
+                    </a>
+                    <a class="navbar-item " href="/create-person"> <!-- is-selected -->
+                        Создать пользователя
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" id="open-modal">
+                        Войти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Модальное окно логина -->
+<div class="modal" id="registration-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h1 class="title">Войти</h1>
+            <div id="error-message" class="notification is-danger is-hidden"></div>
+            <div class="field">
+                <label class="label">Логин</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Введите логин" id="username">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Пароль</label>
+                <div class="control">
+                    <input class="input" type="password" placeholder="Введите пароль" id="password">
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-link" id="register-button">Зарегистрироваться</button>
+            </div>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" id="close-modal"></button>
+</div>
+
+
+
+<div class="columns ml-6 mr-6 mt-2">
+    <div class="column is-3">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Предметная область</p>
+            </div>
+        </section>
+        <section class="hero is-small is-light mt-1">
+            <div class="hero-body">
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Тема</label>
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="Тема">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="box mt-1 has-background-light">
+            <table class="table is-hoverable is-fullwidth has-background-white">
+                <tbody>
+                    <tr class="has-text-centered">
+                        <td>Модель учета</td>
+                    </tr>
+                    <tr class="has-text-centered">
+                        <td>Модель учета</td>
+                    </tr>
+                    <tr class="has-text-centered">
+                        <td>Модель учета</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="column is-9">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Модели</p>
+            </div>
+        </section>
+        <section class="hero is-small is-light mt-1">
+            <div class="hero-body">
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Поиск</label>
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="Модель">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Автор</label>
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="Автор">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <label class="label is-small">Дата от:</label>
+                                <input class="input is-small" type="date" placeholder="Выберите дату от">
+                            </div>
+                            <div class="control">
+                                <label class="label is-small">Дата по:</label>
+                                <input class="input is-small" type="date" placeholder="Выберите дату по">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Фильтры</label>
+                            <button class="button is-small">Студенты</button>
+                            <button class="button is-small">Преподаватели</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="box mt-1 has-background-light">
+            <div class="columns is-multiline">
+                <div class="column is-one-third-desktop is-half-tablet is-full-mobile">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title has-text-centered">
+                                title # 1
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <div class="card-text">
+                                    description
+                                </div>
+                                <hr class="my-2">
+                                <p> <strong> author <br> position </strong></p>
+                                <time datetime="2016-1-1"> date </time>
+                            </div>
+                        </div>
+                        <footer class="card-footer">
+                            <a
+                                    href="#"
+                                    class="card-footer-item"
+                            >Открыть</a>
+                            <a href="#" class="card-footer-item">Изменить</a>
+                            <a
+                                    href="#"
+                                    class="card-footer-item"
+                            >Удалить</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Открытие модального окна
+    document.getElementById('open-modal').onclick = function() {
+        document.getElementById('registration-modal').classList.add('is-active');
+    };
+
+    // Закрытие модального окна
+    document.getElementById('close-modal').onclick = function() {
+        document.getElementById('registration-modal').classList.remove('is-active');
+        document.getElementById('error-message').classList.add('is-hidden'); // Скрыть сообщение об ошибке
+    };
+
+    // Обработка регистрации
+    document.getElementById('register-button').onclick = function() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Пример валидации
+        if (username === '' || password === '') {
+            document.getElementById('error-message').textContent = 'Пожалуйста, заполните все поля.';
+            document.getElementById('error-message').classList.remove('is-hidden');
+        } else {
+            // Здесь можно добавить логику регистрации
+            alert('Регистрация успешна!');
+            document.getElementById('registration-modal').classList.remove('is-active');
+        }
+    };
+</script>
+
+</body>
+</html>
