@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: erdb
+
+  port: 8080
+
+  config:
+    import: ./secrets.properties
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${POSTGRES_CONNECTION_URL}/${POSTGRES_DATABASE_NAME}
+    username: ${POSTGRES_DATABASE_USERNAME}
+    password: ${POSTGRES_DATABASE_PASSWORD}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl_auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    root: INFO

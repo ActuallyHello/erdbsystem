@@ -1,9 +1,9 @@
 package com.ustu.erdb.base.services.impl;
 
-import com.happyfxmas.erdb.base.exceptions.LogicalException;
-import com.happyfxmas.erdb.base.services.ERDBService;
-import com.happyfxmas.erdb.base.store.models.Enumeration;
-import com.happyfxmas.erdb.base.store.repository.EnumerationRepository;
+import com.ustu.erdb.base.exceptions.LogicalException;
+import com.ustu.erdb.base.services.ERDBService;
+import com.ustu.erdb.base.store.models.Enumeration;
+import com.ustu.erdb.base.store.repository.EnumerationRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

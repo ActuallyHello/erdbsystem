@@ -1,6 +1,6 @@
 package com.ustu.erdb.modules.persons.dto;
 
-import com.happyfxmas.erdb.base.dto.EnumerationValueDTO;
+import com.ustu.erdb.base.dto.EnumerationValueDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

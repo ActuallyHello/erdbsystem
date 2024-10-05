@@ -1,6 +1,6 @@
 package com.ustu.erdb.base.store.repository;
 
-import com.happyfxmas.erdb.base.store.models.EnumerationValue;
+import com.ustu.erdb.base.store.models.EnumerationValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

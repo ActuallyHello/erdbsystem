@@ -1,9 +1,9 @@
 package com.ustu.erdb.modules.persons.services;
 
-import com.happyfxmas.erdb.base.exceptions.LogicalException;
-import com.happyfxmas.erdb.base.services.ERDBService;
-import com.happyfxmas.erdb.persons.store.models.User;
-import com.happyfxmas.erdb.persons.store.repository.UserRepository;
+import com.ustu.erdb.base.exceptions.LogicalException;
+import com.ustu.erdb.base.services.ERDBService;
+import com.ustu.erdb.modules.persons.store.models.User;
+import com.ustu.erdb.modules.persons.store.repository.UserRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -41,9 +41,6 @@ public class UserService implements ERDBService {
     public User create(@NonNull User user) {
         if (userRepository.existsByLogin(user.getLogin())) {
             throw new LogicalException("User with login  already exists!");
-        }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new LogicalException("User with email  already exists!");
         }
         return userRepository.save(user);
     }

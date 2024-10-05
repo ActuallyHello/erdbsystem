@@ -1,8 +1,8 @@
 package com.ustu.erdb.modules.persons.store.repository;
 
-import com.happyfxmas.erdb.base.store.models.EnumerationValue;
-import com.happyfxmas.erdb.persons.store.models.Person;
-import com.happyfxmas.erdb.persons.store.models.User;
+import com.ustu.erdb.base.store.models.EnumerationValue;
+import com.ustu.erdb.modules.persons.store.models.Person;
+import com.ustu.erdb.modules.persons.store.models.User;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

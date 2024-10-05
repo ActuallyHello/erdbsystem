@@ -1,11 +1,11 @@
 package com.ustu.erdb.modules.persons.services;
 
-import com.happyfxmas.erdb.base.exceptions.LogicalException;
-import com.happyfxmas.erdb.base.services.ERDBService;
-import com.happyfxmas.erdb.base.store.models.EnumerationValue;
-import com.happyfxmas.erdb.persons.store.models.Person;
-import com.happyfxmas.erdb.persons.store.models.User;
-import com.happyfxmas.erdb.persons.store.repository.PersonRepository;
+import com.ustu.erdb.base.exceptions.LogicalException;
+import com.ustu.erdb.base.services.ERDBService;
+import com.ustu.erdb.base.store.models.EnumerationValue;
+import com.ustu.erdb.modules.persons.store.models.Person;
+import com.ustu.erdb.modules.persons.store.models.User;
+import com.ustu.erdb.modules.persons.store.repository.PersonRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
