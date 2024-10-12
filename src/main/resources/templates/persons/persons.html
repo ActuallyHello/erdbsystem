@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+</head>
+</head>
+<body>
+
+<nav class="navbar is-primary is-mobile" role="navigation" aria-label="main navigation">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Модели
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все модели
+                    </a>
+                    <a class="navbar-item "> <!-- is-selected -->
+                        Создать модель
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item">
+                Задачи
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Пользователи
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все пользователи
+                    </a>
+                    <a class="navbar-item " href="/create-person"> <!-- is-selected -->
+                        Создать пользователя
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" id="open-modal">
+                        Войти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="columns ml-6 mr-6 mt-2">
+    <div class="column">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Пользователи</p>
+            </div>
+        </section>
+
+        <div class="box">
+            <div class="columns">
+                <div class="column">ФИО</div>
+                <div class="column">Позиция</div>
+                <div class="column">Роль</div>
+                <div class="column">Логин</div>
+                <div class="column">Пароль</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

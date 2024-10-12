@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        .box {
+            text-align: center; /* Центрируем содержимое */
+        }
+        .box img {
+            max-width: 100%; /* Ограничиваем ширину изображения */
+            height: auto; /* Сохраняем пропорции изображения */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar is-primary is-mobile" role="navigation" aria-label="main navigation">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Модели
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все модели
+                    </a>
+                    <a class="navbar-item "> <!-- is-selected -->
+                        Создать модель
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item">
+                Задачи
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Пользователи
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все пользователи
+                    </a>
+                    <a class="navbar-item " href="/create-person"> <!-- is-selected -->
+                        Создать пользователя
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" id="open-modal">
+                        Войти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="columns ml-6 mr-6 mt-2">
+    <div class="column">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Создание модели</p>
+            </div>
+        </section>
+        <form id="create-model-form" method="POST" action="/create-models">
+            <div class="box mt-3">
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Название модели</label>
+                            <div class="control">
+                                <input id="label" class="input" name="label" type="text" placeholder="Тема">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Тема</label>
+                            <div class="control">
+                                <input id="topic" class="input" name="topic" type="text" placeholder="Тема">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Описание модели</label>
+                            <textarea id="description"
+                                      class="textarea"
+                                      name="description"
+                                      placeholder="Предметная область"
+                                      rows="10"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box mt-3">
+                <div class="file has-name is-fullwidth">
+                    <label class="file-label">
+                        <input id="schema" class="file-input" type="file" name="schema"/>
+                        <span class="file-cta">
+                      <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span>
+                      <span class="file-label">Загрузить схему модели</span>
+                    </span>
+                        <span id="schema-name" class="file-name"></span>
+                    </label>
+                </div>
+                <div class="file has-name is-fullwidth">
+                    <label class="file-label">
+                        <input id="script" class="file-input" type="file" name="script"/>
+                        <span class="file-cta">
+                      <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span>
+                      <span class="file-label">Загрузить sql скрипт создания модели</span>
+                    </span>
+                        <span class="file-name"></span>
+                    </label>
+                </div>
+                <button type="submit" class="button is-link is-fullwidth">Создать модель</button>
+                <div class="box mt-2">
+                    <img id="uploaded-schema" src="" alt="Пример изображения">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('create-model-form').onsubmit = async function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+            const formData = new FormData();
+            const label = document.getElementById('label').value;
+            const topic = document.getElementById('topic').value;
+            const description = document.getElementById('description').value;
+            const schema = document.getElementById('schema').files[0];
+
+            document.getElementById('schema-name').innerText = schema.value;
+            console.log(document.getElementById('schema-name'));
+            console.log(schema.value);
+
+            formData.append('label', label);
+            formData.append('topic', topic);
+            formData.append('description', description);
+            formData.append('schema', schema);
+
+            try {
+                const response = await fetch('/create-models', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                console.log(result);
+
+                if (response.ok) {
+                    fetch(`/get-schema/${label}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+
+                            const contentType = response.headers.get('Content-Type'); // Получаем Content-Type
+                            return response.blob().then(imageBlob => ({
+                                blob: imageBlob,
+                                contentType: contentType
+                            }));
+                        })
+                        .then(({ blob, contentType }) => {
+                            const imageObjectURL = URL.createObjectURL(blob);
+
+                            // Устанавливаем src в img
+                            const imgElement = document.getElementById('uploaded-schema');
+                            imgElement.src = imageObjectURL;
+
+                            // Устанавливаем alt атрибут (по желанию)
+<!--                            imgElement.alt = Image of type ${contentType};-->
+                        })
+                        .catch(error => {
+                            console.error('There has been a problem with your fetch operation:', error);
+                        });
+                }
+
+                if (result.imageLabel) {
+                    const uploadedImage = document.getElementById('uploaded-schema');
+                    uploadedImage.src = result.imageLabel; // Устанавливаем src для img
+                    uploadedImage.style.display = 'block'; // Показываем изображение
+                }
+<!--                document.getElementById('message').innerText = result.message;-->
+            } catch (error) {
+<!--                document.getElementById('message').innerText = 'Ошибка при загрузке: ' + error.message;-->
+            }
+        };
+</script>
+
+</body>
+</html>
