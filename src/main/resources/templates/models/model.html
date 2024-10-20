@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        #image-container {
+            margin-top: 20px;
+            max-width: 2000px; /* Ограничим ширину контейнера */
+            max-height: 2000px; /* Ограничим высоту контейнера */
+            overflow: hidden; /* Скрываем переполнение */
+            align-items: center; /* Центрируем содержимое по вертикали (если нужно) */
+        }
+        img {
+            width: 100%; /* Изображение займет всю ширину контейнера */
+            height: auto; /* Высота будет пропорциональна ширине */
+            max-width: 100%; /* Ограничиваем ширину изображения */
+        }
+    </style>
+</head>
+<body>
+
+<nav th:insert="~{navbar :: navbar}"></nav>
+
+<div class="columns ml-6 mr-6 mt-2">
+    <div class="column">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Модель</p>
+            </div>
+        </section>
+        <div class="box mt-3">
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Название модели</label>
+                        <div class="control">
+                            <input id="label" class="input" name="label" type="text"
+                                   th:value="${model != null ? model.label : ''}" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Тема</label>
+                        <div class="control">
+                            <input id="topic" class="input" name="topic" type="text"
+                                   th:value="${model != null ? model.topic : ''}" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Описание модели</label>
+                        <textarea id="description"
+                                  class="textarea"
+                                  name="description"
+                                  th:text="${model != null ? model.description : '123'}"
+                                  rows="10"
+                                  disabled
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="columns mt-1">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label is-small">Автор</label>
+                                <div class="control">
+                                    <input disabled id="name" class="input is-small" name="name" type="text"
+                                           th:value="${person != null ? person.lastName + ' ' + person.firstName : ''}">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label is-small">Пользователь</label>
+                                <div class="control">
+                                    <input id="type" class="input is-small" name="type" type="text"
+                                           th:value="${person != null ? person.type.label : ''}" disabled>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label is-small">Группа</label>
+                                <div class="control">
+                                    <input id="group" class="input is-small" name="group" type="text"
+                                           th:value="${person != null ? person.group.label : ''}" disabled>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label is-small">Дата</label>
+                                <div class="control">
+                                    <input id="createdAt" class="input is-small" name="createdAt" type="text"
+                                           th:value="${modelCreatedAt}" disabled>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label is-small">Результат задания?</label>
+                                <div class="control">
+                                    <input id="isTaskResult" style="width: 20px; height: 30px;" type="checkbox"
+                                           th:checked="*{isTaskResult}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <form action="/model-info" method="POST" id="upload-model-info">
+                                <input type="hidden" name="modelId" th:value="${model != null ? model.id : ''}">
+                                <div class="field">
+                                    <label class="label is-small">Количество таблиц</label>
+                                    <div class="control">
+                                        <input id="tables" class="input is-small" name="tables" type="text"
+                                               th:value="${modelinfo != null ? modelinfo.tableCount : ''}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label is-small">Количество связей</label>
+                                    <div class="control">
+                                        <input id="relations" class="input is-small" name="relations" type="text"
+                                               th:value="${modelinfo != null ? modelinfo.relationCount : ''}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label is-small">Архетип</label>
+                                    <div class="control">
+                                        <input id="archetype" class="input is-small" name="archetype" type="text"
+                                               th:value="${modelinfo != null ? modelinfo.archetype : ''}">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label is-small">Нормализация</label>
+                                    <div class="control">
+                                        <input id="normalization" class="input is-small" name="normalization"
+                                               th:value="${modelinfo != null ? modelinfo.normalizationLevel : ''}"
+                                               type="text">
+                                    </div>
+                                </div>
+                                <button type="submit" class="button">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box mt-3">
+            <div id="image-container">
+                <img id="image-preview" th:src="${model.schemaPath}" alt="Предпросмотр изображения"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = async () => {
+        const label = document.getElementById('label').value;
+        if (label != null) {
+
+        fetch(`/get-schema/${label}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+
+                        const contentType = response.headers.get('Content-Type'); // Получаем Content-Type
+                        return response.blob().then(imageBlob => ({
+                            blob: imageBlob,
+                            contentType: contentType
+                        }));
+                    })
+                    .then(({ blob, contentType }) => {
+                        const imageObjectURL = URL.createObjectURL(blob);
+
+                        // Устанавливаем src в img
+                        const imgElement = document.getElementById('image-preview');
+                        imgElement.src = imageObjectURL;
+
+                        // Устанавливаем alt атрибут (по желанию)
+                        imgElement.alt = label;
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+        }
+    }
+</script>
+
+</body>
+</html>

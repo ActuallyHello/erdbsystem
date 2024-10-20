@@ -40,19 +40,19 @@ public class Person {
     private String middleName;
 
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             optional = false
     )
     private EnumerationValue type;
 
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             optional = false
     )
     private EnumerationValue group;
 
     @OneToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.MERGE,
             optional = false
     )

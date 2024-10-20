@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        #image-container {
+            margin-top: 20px;
+            max-width: 2000px; /* Ограничим ширину контейнера */
+            max-height: 2000px; /* Ограничим высоту контейнера */
+            overflow: hidden; /* Скрываем переполнение */
+            align-items: center; /* Центрируем содержимое по вертикали (если нужно) */
+        }
+        img {
+            width: 100%; /* Изображение займет всю ширину контейнера */
+            height: auto; /* Высота будет пропорциональна ширине */
+            max-width: 100%; /* Ограничиваем ширину изображения */
+        }
+    </style>
+</head>
+<body>
+
+<nav th:insert="~{navbar :: navbar}"></nav>
+
+<div class="columns ml-6 mr-6 mt-2">
+    <div class="column">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Создание модели</p>
+            </div>
+        </section>
+        <form id="create-model-form" method="POST" action="/create-model" enctype="multipart/form-data">
+            <div class="box mt-3">
+                <div class="columns">
+                    <div class="column">
+                        <input id="is-task-result" name="isTaskResult" type="hidden" th:value="${isTaskResult}">
+                        <div class="field">
+                            <label class="label">Название модели</label>
+                            <div class="control">
+                                <input id="label" class="input" name="label" type="text" placeholder="Название модели" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Тема</label>
+                            <div class="control">
+                                <input id="topic" class="input" name="topic" type="text" placeholder="Тема" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Описание модели</label>
+                            <textarea id="description"
+                                      class="textarea"
+                                      name="description"
+                                      placeholder="Предметная область"
+                                      rows="10"
+                                      required
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="column mt-5">
+                        <div class="file has-name is-fullwidth mt-2">
+                            <label class="file-label">
+                                <input id="schema" class="file-input" type="file" name="schema" required/>
+                                <span class="file-cta">
+                                  <span class="file-icon">
+                                    <i class="fas fa-upload"></i>
+                                  </span>
+                                  <span class="file-label">Загрузить схему модели</span>
+                                </span>
+                                <span id="schema-name" class="file-name"></span>
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label class="label">Sql-скрипт модели</label>
+                            <textarea id="sql-script"
+                                      class="textarea"
+                                      name="sql-script"
+                                      placeholder="sql-скрипт создания модели для любой СУБД"
+                                      rows="10"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="button is-link is-fullwidth">Создать модель</button>
+            </div>
+            <div class="box mt-3">
+                <div id="image-container">
+                    <img id="image-preview" src="" alt="Предпросмотр изображения" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const schema = document.getElementById('schema');
+    const schemaName = document.getElementById('schema-name');
+    const imagePreview = document.getElementById('image-preview');
+
+    schema.addEventListener('change', function() {
+        const file = schema.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result; // Устанавливаем источник изображения
+            }
+            reader.readAsDataURL(file); // Читаем файл как URL
+            schemaName.textContent = `${file.name} (${(file.size / 1024).toFixed(2)} КБ)`;
+        } else {
+            imagePreview.src = ''; // Очищаем изображение, если файл не выбран
+            schemaName.textContent = '';
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -38,7 +38,7 @@ public class EnumerationValue {
     @JsonIgnore
     @JsonProperty(value = "enumeration")
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             optional = false
     )
     private Enumeration enumeration;

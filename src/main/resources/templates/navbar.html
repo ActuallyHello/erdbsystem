@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<nav th:fragment="navbar" class="navbar is-primary is-mobile" role="navigation" aria-label="main navigation">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Модели
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все модели
+                    </a>
+                    <a class="navbar-item "> <!-- is-selected -->
+                        Создать модель
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item">
+                Задачи
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Пользователи
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все пользователи
+                    </a>
+                    <a class="navbar-item " href="/create-person"> <!-- is-selected -->
+                        Создать пользователя
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" id="open-modal">
+                        Войти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+</body>
+
+</html>

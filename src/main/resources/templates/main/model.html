@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        .box {
+            text-align: center; /* Центрируем содержимое */
+        }
+        .box img {
+            max-width: 100%; /* Ограничиваем ширину изображения */
+            height: auto; /* Сохраняем пропорции изображения */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar is-primary is-mobile" role="navigation" aria-label="main navigation">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Модели
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все модели
+                    </a>
+                    <a class="navbar-item "> <!-- is-selected -->
+                        Создать модель
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item">
+                Задачи
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Пользователи
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Все пользователи
+                    </a>
+                    <a class="navbar-item " href="/create-person"> <!-- is-selected -->
+                        Создать пользователя
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <h1><span th:text="${lastName}"></span> <span th:text="${firstName}"></span></h1>
+                    <h1><input type="hidden" id="personId" th:value="${personId}"></h1>
+                    <h1><input type="hidden" id="modelId" th:value="${modelId}"></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="columns ml-6 mr-6 mt-2">
+    <div class="column">
+        <section class="hero is-small is-dark">
+            <div class="hero-body">
+                <p class="subtitle has-text-centered">Создание модели</p>
+            </div>
+        </section>
+        <div class="box mt-3">
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Название модели</label>
+                        <div class="control">
+                            <input id="label" class="input" name="label" type="text" placeholder="Тема">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Тема</label>
+                        <div class="control">
+                            <input id="topic" class="input" name="topic" type="text" placeholder="Тема">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Описание модели</label>
+                        <textarea id="description"
+                                  class="textarea"
+                                  name="description"
+                                  placeholder="Предметная область"
+                                  rows="10"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box mt-3">
+            <div class="columns">
+                <div class="column">
+                    <div class="field">
+                        <label class="label is-small">Автор</label>
+                        <div class="control">
+                            <input id="name" class="input is-small" name="name" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label is-small">Пользователь</label>
+                        <div class="control">
+                            <input id="type" class="input is-small" name="type" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label is-small">Группа</label>
+                        <div class="control">
+                            <input id="group" class="input is-small" name="group" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-1">
+                    <div class="field">
+                        <label class="label is-small">Дата</label>
+                        <div class="control">
+                            <input id="createdAt" class="input is-small" name="createdAt" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-1">
+                    <div class="field">
+                        <label class="label is-small">Из задания?</label>
+                        <div class="control">
+                            <input id="isTaskResult" class="input is-small" type="checkbox" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box mt-3">
+            <div class="box mt-2">
+                <img id="uploaded-schema" src="" alt="Пример изображения">
+            </div>
+        </div>
+        <div class="box mt-3">
+            <form action="/update-model-info" method="POST" id="update-modelinfo">
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Кол-во таблиц</label>
+                            <div class="control">
+                                <input id="tables" class="input is-small" name="tables" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Кол-во связей</label>
+                            <div class="control">
+                                <input id="relations" class="input is-small" name="relations" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label is-small">Архетип</label>
+                            <div class="control">
+                                <input id="archetype" class="input is-small" name="archetype" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-1">
+                        <div class="field">
+                            <label class="label is-small">Нормализация</label>
+                            <div class="control">
+                                <input id="normalization" class="input is-small" name="normalization" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button th:if="${isTeacher}" class="button" type="submit">Обновить данные модели</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = async () => {
+        console.log("START")
+        const modelId = document.getElementById('modelId').value;
+        console.log("MODEL ", modelId);
+        try {
+            const response = await fetch(`/models/${modelId}`, {
+                method: 'GET'
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                document.getElementById('label').value = result.label;
+                document.getElementById('topic').value = result.topic;
+                document.getElementById('description').value = result.description;
+                document.getElementById('createdAt').value = result.createdAt;
+                document.getElementById('isTaskResult').value = result.isTaskResult;
+                document.getElementById('name').value = result.lastName + " " + result.firstName + " " + result.middleName;
+                document.getElementById('group').value = result.group;
+                document.getElementById('type').value = result.type;
+
+                if (result.tables != null) {
+                    document.getElementById('tables').value = result.tables;
+                    document.getElementById('relations').value = result.relations;
+                    document.getElementById('archetype').value = result.archetype;
+                    document.getElementById('normalization').value = result.normalization;
+                }
+
+                fetch(`/get-schema/${result.label}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+
+                        const contentType = response.headers.get('Content-Type'); // Получаем Content-Type
+                        return response.blob().then(imageBlob => ({
+                            blob: imageBlob,
+                            contentType: contentType
+                        }));
+                    })
+                    .then(({ blob, contentType }) => {
+                        const imageObjectURL = URL.createObjectURL(blob);
+
+                        // Устанавливаем src в img
+                        const imgElement = document.getElementById('uploaded-schema');
+                        imgElement.src = imageObjectURL;
+
+                        // Устанавливаем alt атрибут (по желанию)
+                        imgElement.alt = result.label;
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+            } else {
+                console.log("ERROR", response);
+            }
+        } catch (error) {
+            console.log("ERROR", error);
+        }
+    }
+
+    const form = document.getElementById('update-modelinfo');
+
+    form.onsubmit = async function(event) {
+        event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+        const formData = new FormData();
+        const tables = document.getElementById('tables').value;
+        const relations = document.getElementById('relations').value;
+        const archetype = document.getElementById('archetype').value;
+        const normalization = document.getElementById('normalization').value;
+        const modelId = document.getElementById('modelId').value;
+
+         formData.append('tables', tables);
+         formData.append('relations', relations);
+         formData.append('archetype', archetype);
+         formData.append('normalization', normalization);
+         formData.append('modelId', modelId);
+
+         try {
+            const response = await fetch('/update-model-info', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                console.log("UPDATED")
+            } else {
+                console.log("NOT OK", response)
+            }
+         } catch (error) {
+            console.log('Ошибка!', error);
+         }
+    }
+</script>
+
+</body>
+</html>

@@ -103,14 +103,15 @@
                 </div>
 
                 <div class="select">
-                    <select id="person-type">
+                    <select id="type" required>
+                        <option>...</option>
                         <option value="student">Студент</option>
                         <option value="teacher">Преподаватель</option>
                     </select>
                 </div>
 
                 <div class="select">
-                    <select id="position">
+                    <select id="group" required>
                         <option value="">...</option>
                     </select>
                 </div>
@@ -129,13 +130,19 @@
     window.onload = (event) => {
         console.log("page is fully loaded");
 
-        const personType = document.getElementById('person-type');
-        const positionSelect = document.getElementById('position');
+        const personType = document.getElementById('type');
+        const positionSelect = document.getElementById('group');
 
         personType.onchange = async () => {
-            console.log(positionSelect.value);
 
-            const response = await fetch(`http://localhost:8080/enumeration-values/${personType.value}`);
+            let enumeration = null;
+            if (personType.value === 'student') {
+                enumeration = 'group';
+            } else {
+                enumeration = 'position';
+            }
+
+            const response = await fetch(`http://localhost:8080/enumeration-values/${enumeration}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -145,7 +152,7 @@
             positionSelect.innerHTML = '';
             data.forEach(item => {
                 const option = document.createElement('option');
-                option.value = item.id; // Предполагаем, что поля называются value
+                option.value = item.code; // Предполагаем, что поля называются value
                 option.textContent = item.label; // Предполагаем, что поля называются label
                 positionSelect.appendChild(option);
             });
@@ -157,41 +164,62 @@
     form.onsubmit = async function(event) {
         event.preventDefault(); // Предотвращаем перезагрузку страницы
 
+        const responseMessage = document.getElementById('response-message');
+
         const login = document.getElementById('login').value;
         const password = document.getElementById('password').value;
         const firstName = document.getElementById('firstname').value;
         const lastName = document.getElementById('lastname').value;
         const middleName = document.getElementById('middlename').value;
-        const personType = document.getElementById('person-type').value;
-        const position = document.getElementById('position').value;
+        const groupCode = document.getElementById('group').value;
+        const typeCode = document.getElementById('type').value;
 
-        const responseMessage = document.getElementById('response-message');
-
-        // Отправка POST-запроса
         try {
-            const response = await fetch(`http://localhost:8080/create-persons`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ login, password, firstName, lastName, middleName, personType, position }),
-            });
+            const userFormData = new FormData();
+            userFormData.append("login", login);
+            userFormData.append("password", password);
 
-            if (response.ok) {
-                const result = await response.json();
-<!--                responseMessage.classList.remove('is-hidden', 'is-danger');-->
-<!--                responseMessage.classList.add('is-success');-->
-<!--                responseMessage.textContent = 'Пользователь успешно создан!';-->
+            const userResponse = await fetch(`http://localhost:8080/create-users`, {
+                method: 'POST',
+                body: userFormData
+            });
+            if (userResponse.ok) {
+                const userResult = await userResponse.json();
+                const userid = userResult.id;
+
+                const personFormData = new FormData();
+                personFormData.append("firstName", firstName);
+                personFormData.append("lastName", lastName);
+                personFormData.append("middleName", middleName);
+                personFormData.append("typeCode", typeCode);
+                personFormData.append("groupCode", groupCode);
+                personFormData.append("userId", userid);
+
+                const personResponse = await fetch(`http://localhost:8080/create-persons`, {
+                    method: 'POST',
+                    body: personFormData
+                });
+                if (personResponse.ok) {
+                    responseMessage.classList.remove('is-hidden', 'is-danger')
+                    responseMessage.classList.add('is-success');
+                    responseMessage.textContent = 'Пользователь создался успешно!'
+                } else {
+                    console.log(personResponse);
+                    responseMessage.classList.remove('is-hidden', 'is-success')
+                    responseMessage.classList.add('is-danger');
+                    responseMessage.textContent = 'Произошла ошибка при отправке запроса.'
+                }
             } else {
-                const error = await response.json();
-<!--                responseMessage.classList.remove('is-hidden', 'is-success');-->
-<!--                responseMessage.classList.add('is-danger');-->
-<!--                responseMessage.textContent = Ошибка: ${error.message};-->
+                console.log(userResponse);
+                responseMessage.classList.remove('is-hidden', 'is-success')
+                responseMessage.classList.add('is-danger');
+                responseMessage.textContent = 'Произошла ошибка при отправке запроса.'
             }
         } catch (error) {
-<!--            responseMessage.classList.remove('is-hidden', 'is-success');-->
-<!--            responseMessage.classList.add('is-danger');-->
-<!--            responseMessage.textContent = 'Произошла ошибка при отправке запроса.';-->
+            console.log(error);
+            responseMessage.classList.remove('is-hidden', 'is-success')
+            responseMessage.classList.add('is-danger');
+            responseMessage.textContent = 'Произошла ошибка при отправке запроса.'
         }
     };
 </script>

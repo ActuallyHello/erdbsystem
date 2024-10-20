@@ -2,8 +2,10 @@ package com.ustu.erdb.modules.persons.services;
 
 import com.ustu.erdb.base.exceptions.LogicalException;
 import com.ustu.erdb.base.services.ERDBService;
+import com.ustu.erdb.modules.persons.store.models.Person;
 import com.ustu.erdb.modules.persons.store.models.User;
 import com.ustu.erdb.modules.persons.store.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,11 @@ public class UserService implements ERDBService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PersonService personService;
+
+    public static User currentUser = null;
 
     public User getById(@NonNull Long id) {
         return userRepository

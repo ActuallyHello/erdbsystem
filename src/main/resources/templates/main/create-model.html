@@ -56,9 +56,10 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-light" id="open-modal">
-                        Войти
-                    </a>
+                    <h1><span th:text="${lastName}"></span> <span th:text="${firstName}"></span></h1>
+<!--                    <h1><span id="personId" th:text="${personId}"></span></h1>-->
+                    <h1><input type="hidden" id="personId" th:value="${personId}"></h1>
+                    <h1><input type="hidden" id="isTaskResult" th:value="${isTaskResult}"></h1>
                 </div>
             </div>
         </div>
@@ -72,7 +73,7 @@
                 <p class="subtitle has-text-centered">Создание модели</p>
             </div>
         </section>
-        <form id="create-model-form" method="POST" action="/create-models">
+        <form action="/create-model" method="POST" id="create-model-form">
             <div class="box mt-3">
                 <div class="columns">
                     <div class="column">
@@ -145,6 +146,8 @@
             const topic = document.getElementById('topic').value;
             const description = document.getElementById('description').value;
             const schema = document.getElementById('schema').files[0];
+            const isTaskResult = document.getElementById('isTaskResult').value;
+            const personId = document.getElementById('personId').value;
 
             document.getElementById('schema-name').innerText = schema.value;
             console.log(document.getElementById('schema-name'));
@@ -154,6 +157,8 @@
             formData.append('topic', topic);
             formData.append('description', description);
             formData.append('schema', schema);
+            formData.append('isTaskResult', isTaskResult);
+            formData.append('personId', personId);
 
             try {
                 const response = await fetch('/create-models', {

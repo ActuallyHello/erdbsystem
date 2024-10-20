@@ -66,16 +66,75 @@
         </section>
 
         <div class="box">
-            <div class="columns">
+            <div class="columns mb-0 has-text-centered">
                 <div class="column">ФИО</div>
                 <div class="column">Позиция</div>
                 <div class="column">Роль</div>
                 <div class="column">Логин</div>
                 <div class="column">Пароль</div>
             </div>
+            <div id="person-list" class="mt-0">
+            </div>
         </div>
+
+        <a href="/create-person" class="button">Создать пользователя</a>
     </div>
 </div>
+
+<script>
+    window.onload = async (event) => {
+        console.log("page is fully loaded");
+
+        const personList = document.getElementById('person-list');
+
+        const response = await fetch(`http://localhost:8080/persons`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Предполагаем, что API возвращает JSON
+        console.log("RESPONSE", data);
+
+        data.forEach(item => {
+            let hr = document.createElement('hr');
+            hr.classList.add('mt-0');
+            hr.classList.add('mb-0');
+            personList.appendChild(hr);
+
+            let columns = document.createElement("div");
+            columns.classList.add('columns');
+
+            let columnFIO = document.createElement("div");
+            columnFIO.classList.add("column");
+            columnFIO.innerText = item.fio;
+            columns.appendChild(columnFIO);
+
+            let columnGroup = document.createElement("div");
+            columnGroup.classList.add("column");
+            columnGroup.innerText = item.group;
+            columns.appendChild(columnGroup);
+            columns.appendChild(columnFIO);
+
+            let columnType = document.createElement("div");
+            columnType.classList.add("column");
+            columnType.innerText = item.type;
+            columns.appendChild(columnType);
+
+            let columnLogin = document.createElement("div");
+            columnLogin.classList.add("column");
+            columnLogin.innerText = item.login;
+            columns.appendChild(columnLogin);
+
+            let columnPassword = document.createElement("div");
+            columnPassword.classList.add("column");
+            columnPassword.innerText = item.password;
+            columns.appendChild(columnPassword);
+
+            personList.appendChild(columns);
+        });
+    };
+
+
+</script>
 
 </body>
 </html>
